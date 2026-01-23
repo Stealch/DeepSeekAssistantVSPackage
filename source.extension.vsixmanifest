@@ -25,6 +25,8 @@
 			  <Targets>Microsoft.VisualStudio.ToolWindow</Targets>
 		  </ToolWindow>
 	  </Asset>
+	<Asset Type="Microsoft.VisualStudio.VsCommandTable" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+	  <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
   </Assets>
 	
 </PackageManifest>
