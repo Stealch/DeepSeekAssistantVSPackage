@@ -12,8 +12,6 @@
 		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
 	</Dependencies>
 	<Assets>
-		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-		<!-- Asset для окна инструментов -->
 		<Asset Type="Microsoft.VisualStudio.ToolWindow" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|">
 			<ToolWindow>
 				<Name>DeepSeek Chat</Name>
@@ -23,7 +21,7 @@
 				<Targets>Microsoft.VisualStudio.ToolWindow</Targets>
 			</ToolWindow>
 		</Asset>
-		<!-- Asset для команд -->
+
 		<Asset Type="Microsoft.VisualStudio.VsCommandTable" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
 		<Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
 	</Assets>
