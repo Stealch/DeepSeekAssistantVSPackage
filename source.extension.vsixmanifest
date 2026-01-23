@@ -16,7 +16,6 @@
 			<ToolWindow>
 				<Name>DeepSeek Chat</Name>
 				<ID>6c5b550d-8e4a-4a5c-8b5a-7e9f3c1d2a4b</ID>
-				<Icon>ResourceID:4001</Icon>
 				<Visibility>Docked</Visibility>
 				<Targets>Microsoft.VisualStudio.ToolWindow</Targets>
 			</ToolWindow>
