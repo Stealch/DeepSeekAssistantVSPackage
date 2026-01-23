@@ -25,7 +25,6 @@
 		</Asset>
 		<!-- Asset для команд -->
 		<Asset Type="Microsoft.VisualStudio.VsCommandTable" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
-		<!-- Asset для MEF компонентов -->
 		<Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
 	</Assets>
 	<Prerequisites>
