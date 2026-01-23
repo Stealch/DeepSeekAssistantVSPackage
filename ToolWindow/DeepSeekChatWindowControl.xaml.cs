@@ -58,15 +58,29 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
 
         private async void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            await SendMessageAsync();
+            try
+            {
+                await SendMessageAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                AddSystemMessage($"Error: {ex.Message}");
+            }
         }
 
         private async void InputTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && !Keyboard.IsKeyDown(Key.LeftShift) && !Keyboard.IsKeyDown(Key.RightShift))
             {
-                await SendMessageAsync();
-                e.Handled = true;
+                try
+                {
+                    await SendMessageAsync().ConfigureAwait(false);
+                    e.Handled = true;
+                }
+                catch (Exception ex)
+                {
+                    AddSystemMessage($"Error: {ex.Message}");
+                }
             }
         }
 
