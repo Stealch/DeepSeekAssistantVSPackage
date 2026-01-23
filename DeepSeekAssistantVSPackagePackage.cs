@@ -3,6 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Task = System.Threading.Tasks.Task;
+using DeepSeekAssistantVSPackage.ToolWindows;
 
 namespace DeepSeekAssistantVSPackage
 {
