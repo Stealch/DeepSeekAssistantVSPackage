@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.36631.11
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepSeekAssistantVSPackage", "DeepSeekAssistantVSPackage.csproj", "{1D88EE07-17A5-43C2-B189-F3B9BE3AE035}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D88EE07-17A5-43C2-B189-F3B9BE3AE035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D88EE07-17A5-43C2-B189-F3B9BE3AE035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D88EE07-17A5-43C2-B189-F3B9BE3AE035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D88EE07-17A5-43C2-B189-F3B9BE3AE035}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FE1D5AF-F29A-4220-9ABF-077A1B74FE66}
+	EndGlobalSection
+EndGlobal
