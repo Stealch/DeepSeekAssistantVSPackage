@@ -22,11 +22,15 @@ namespace DeepSeekAssistantVSPackage
 
         protected override async ThreadTask InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            // КРИТИЧЕСКИ ВАЖНО: вызов базовой инициализации
+            await base.InitializeAsync(cancellationToken, progress);
+
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             // Инициализируем команду открытия окна
             await OpenDeepSeekChatCommand.InitializeAsync(this);
         }
+
 
         #endregion
     }
