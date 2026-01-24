@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
-[assembly: Guid("eec8b5df-9915-4214-b363-433189a77d6d")]
+[assembly: Guid("1D88EE07-17A5-43C2-B189-F3B9BE3AE035")] //Тут могла быть ошибка, но мне лень ее делать
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

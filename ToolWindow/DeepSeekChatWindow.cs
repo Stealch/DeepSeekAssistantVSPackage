@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-
 namespace DeepSeekAssistantVSPackage.ToolWindows
 {
     [Guid("3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d")]
@@ -35,13 +34,10 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             {
                 // Пытаемся получить пакет через глобальный провайдер услуг
                 var serviceProvider = ServiceProvider.GlobalProvider;
-                targetPackage = serviceProvider?.GetService(typeof(DeepSeekAssistantVSPackagePackage)) as AsyncPackage;
+                targetPackage = serviceProvider?.GetService(typeof(DeepSeekAssistantVSPackagePackage)) as AsyncPackage ?? serviceProvider?.GetService(typeof(AsyncPackage)) as AsyncPackage;
 
-                if (targetPackage == null)
-                {
                     // Последняя попытка: получаем любой AsyncPackage
-                    targetPackage = serviceProvider?.GetService(typeof(AsyncPackage)) as AsyncPackage;
-                }
+
             }
 
             if (targetPackage == null)

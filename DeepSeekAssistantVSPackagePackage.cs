@@ -11,12 +11,13 @@ using ThreadTask = System.Threading.Tasks.Task;
 namespace DeepSeekAssistantVSPackage
 {
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid(DeepSeekAssistantVSPackagePackage.PackageGuidString)]
+    [Guid(PackageGuidString)]
     [ProvideToolWindow(typeof(DeepSeekChatWindow))]
     public sealed class DeepSeekAssistantVSPackagePackage : AsyncPackage
     {
         public const string PackageGuidString = "cec1d5b0-52cd-4eb6-8c3a-539740e42a34";
         public const string PackageCommandSetGuidString = "2c93c2f5-3df3-44be-b847-cfea5db0fd6d";
+		public const string DeepSeekChatToolWindowString = "3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d";
 
         #region Package Members
 
@@ -30,7 +31,6 @@ namespace DeepSeekAssistantVSPackage
             // Инициализируем команду открытия окна
             await OpenDeepSeekChatCommand.InitializeAsync(this);
         }
-
 
         #endregion
     }

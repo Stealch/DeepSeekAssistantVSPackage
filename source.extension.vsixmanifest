@@ -4,7 +4,7 @@
                  xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 
   <Metadata>
-    <Identity Id="Stealch.DeepSeekAssistantVSPackage"
+    <Identity Id="2c93c2f5-3df3-44be-b847-cfea5db0fd6d"
               Version="1.0.0"
               Language="en-US"
               Publisher="Stealch" />
