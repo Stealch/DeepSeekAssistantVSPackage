@@ -29,7 +29,7 @@ namespace DeepSeekAssistantVSPackage.Commands
 
         public static async System.Threading.Tasks.Task InitializeAsync(AsyncPackage package)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
+            await package.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             var commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             Instance = new OpenDeepSeekChatCommand(package, commandService);
