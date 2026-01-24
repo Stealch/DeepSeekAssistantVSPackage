@@ -7,7 +7,8 @@
   <Commands>
 
     <Groups>
-      <Group guid="guidDeepSeekAssistantVSPackageCmdSet"
+      <!-- Группа для меню Tools -->
+      <Group guid="guidDeepSeekAssistantVSPackagePackageCmdSet"
              id="MyMenuGroup"
              priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
@@ -15,14 +16,15 @@
     </Groups>
 
     <Buttons>
-      <Button guid="guidDeepSeekAssistantVSPackageCmdSet"
-              id="OpenDeepSeekChat"
+      <!-- Кнопка команды Open DeepSeek Chat -->
+      <Button guid="guidDeepSeekAssistantVSPackagePackageCmdSet"
+              id="OpenDeepSeekChatCommandId"
               priority="0x0100"
               type="Button">
-        <Parent guid="guidDeepSeekAssistantVSPackageCmdSet"
+        <Parent guid="guidDeepSeekAssistantVSPackagePackageCmdSet"
                 id="MyMenuGroup"/>
         <Strings>
-          <ButtonText>Open DeepSeek Chat</ButtonText>
+          <ButtonText>DeepSeek Chat</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -30,9 +32,14 @@
   </Commands>
 
   <Symbols>
-    <GuidSymbol name="guidDeepSeekAssistantVSPackageCmdSet"
-                value="{b6216745-f7c2-486a-848d-5d89b93666f9}">
-      <IDSymbol name="OpenDeepSeekChat" value="0x0100"/>
+    <!-- GUID пакета (должен совпадать с PackageGuidString) -->
+    <GuidSymbol name="guidDeepSeekAssistantVSPackagePackage"
+                value="{cec1d5b0-52cd-4eb6-8c3a-539740e42a34}" />
+
+    <!-- GUID набора команд (должен совпадать с CommandSet в Package.cs) -->
+    <GuidSymbol name="guidDeepSeekAssistantVSPackagePackageCmdSet"
+                value="{2c93c2f5-3df3-44be-b847-cfea5db0fd6d}">
+      <IDSymbol name="OpenDeepSeekChatCommandId" value="0x0100"/>
       <IDSymbol name="MyMenuGroup" value="0x0200"/>
     </GuidSymbol>
   </Symbols>
