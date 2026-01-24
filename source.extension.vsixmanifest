@@ -11,7 +11,7 @@
 
     <DisplayName>DeepSeek Assistant</DisplayName>
     <Description xml:space="preserve">
-      Visual Studio extension providing DeepSeek AI chat tool window.
+      Visual Studio extension providing DeepSeek AI chat
     </Description>
     <MoreInfo>https://github.com/Stealch/DeepSeekAssistantVSPackage</MoreInfo>
 
