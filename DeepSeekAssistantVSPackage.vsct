@@ -1,50 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<Extern href="stdidcmd.h"/>
-	<Extern href="vsshlids.h"/>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable">
 
-	<Commands package="guidDeepSeekAssistantVSPackagePkg">
-		<Groups>
-			<!-- Группа в меню Tools (подменю Extensions) -->
-			<Group guid="guidDeepSeekAssistantVSPackageCmdSet" id="MyMenuGroup" priority="0x0100">
-				<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
-			</Group>
-		</Groups>
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
 
-		<Buttons>
-			<Button guid="guidDeepSeekAssistantVSPackageCmdSet" id="cmdidOpenDeepSeekChat" priority="0x0100" type="Button">
-				<Parent guid="guidDeepSeekAssistantVSPackageCmdSet" id="MyMenuGroup" />
-				<!-- Можно временно убрать иконку -->
-				<!-- <Icon guid="guidImages" id="bmpPic1" /> -->
-				<Strings>
-					<ButtonText>Open DeepSeek Chat</ButtonText>
-					<CommandName>OpenDeepSeekChat</CommandName>
-					<CanonicalName>OpenDeepSeekChat</CanonicalName>
-				</Strings>
-			</Button>
-		</Buttons>
+  <Commands>
+    <Groups>
+      <Group guid="guidDeepSeekAssistantVSPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
+      </Group>
+    </Groups>
 
-		<!-- Времено закомментировать Bitmaps пока нет файла -->
-		<!--
-    <Bitmaps>
-      <Bitmap guid="guidImages" href="Resources\Images.png" usedList="bmpPic1"/>
-    </Bitmaps>
-    -->
-	</Commands>
+    <Buttons>
+      <Button guid="guidDeepSeekAssistantVSPackageCmdSet"
+              id="OpenDeepSeekChat"
+              priority="0x0100"
+              type="Button">
+        <Parent guid="guidDeepSeekAssistantVSPackageCmdSet" id="MyMenuGroup"/>
+        <Strings>
+          <ButtonText>Open DeepSeek Chat</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
 
-	<Symbols>
-		<!-- GUID пакета -->
-		<GuidSymbol name="guidDeepSeekAssistantVSPackagePkg" value="{b6216745-f7c2-486a-848d-5d89b93666f9}" />
+  <Symbols>
+    <GuidSymbol name="guidDeepSeekAssistantVSPackageCmdSet"
+                value="{b6216745-f7c2-486a-848d-5d89b93666f9}">
+      <IDSymbol name="OpenDeepSeekChat" value="0x0100"/>
+      <IDSymbol name="MyMenuGroup" value="0x0200"/>
+    </GuidSymbol>
+  </Symbols>
 
-		<!-- GUID набора команд -->
-		<GuidSymbol name="guidDeepSeekAssistantVSPackageCmdSet" value="{b6216745-f7c2-486a-848d-5d89b93666f9}">
-			<IDSymbol name="MyMenuGroup" value="0x1020" />
-			<IDSymbol name="cmdidOpenDeepSeekChat" value="0x0100" />
-		</GuidSymbol>
-
-		<!-- GUID для иконок (можно временно убрать) -->
-		<!--
-    <GuidSymbol name="guidImages" value="{f0043a5e-87c3-44a7-b8f5-6d6b7e6d7f5d}" />
-    -->
-	</Symbols>
 </CommandTable>
