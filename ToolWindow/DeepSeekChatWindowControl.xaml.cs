@@ -14,7 +14,7 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
     {
         private DeepSeekAPI _apiClient;
         private DeepseekAuthService _authService;
-        private SystemBrowserOAuthService _oauthService;
+        private readonly SystemBrowserOAuthService _oauthService;
 
         public ObservableCollection<ChatMessageItem> ChatMessages { get; set; }
 
@@ -56,7 +56,7 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             return string.Empty;
         }
 
-        private async void SendButton_Click(object sender, RoutedEventArgs e)
+        private async System.Threading.Tasks.Task SendButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             }
         }
 
-        private async void InputTextBox_KeyDown(object sender, KeyEventArgs e)
+        private async System.Threading.Tasks.Task InputTextBox_KeyDownAsync(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && !Keyboard.IsKeyDown(Key.LeftShift) && !Keyboard.IsKeyDown(Key.RightShift))
             {

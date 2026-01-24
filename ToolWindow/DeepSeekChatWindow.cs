@@ -41,28 +41,26 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
 
                 foreach (var resourceName in possibleNames)
                 {
-                    using (var stream = assembly.GetManifestResourceStream(resourceName))
+                    using var stream = assembly.GetManifestResourceStream(resourceName);
+                    if (stream != null)
                     {
-                        if (stream != null)
+                        // СОЗДАЁМ ИКОНКУ И НАЗНАЧАЕМ ЧЕРЕЗ ОКОННЫЙ HANDLE
+                        var icon = new Icon(stream);
+
+                        // Для ToolWindowPane нужно использовать Bitmap, а не Icon напрямую
+                        // Конвертируем Icon в Bitmap
+                        using (var bitmap = icon.ToBitmap())
                         {
-                            // СОЗДАЁМ ИКОНКУ И НАЗНАЧАЕМ ЧЕРЕЗ ОКОННЫЙ HANDLE
-                            var icon = new Icon(stream);
+                            // Получаем handle битмапа
+                            IntPtr hBitmap = bitmap.GetHbitmap();
 
-                            // Для ToolWindowPane нужно использовать Bitmap, а не Icon напрямую
-                            // Конвертируем Icon в Bitmap
-                            using (var bitmap = icon.ToBitmap())
-                            {
-                                // Получаем handle битмапа
-                                IntPtr hBitmap = bitmap.GetHbitmap();
-
-                                // В VS ToolWindow иконка устанавливается через ресурсы
-                                // Оставляем стандартную иконку для now
-                                // Иконку можно будет настроить через .vsct/.resx позже
-                            }
-
-                            icon.Dispose();
-                            return;
+                            // В VS ToolWindow иконка устанавливается через ресурсы
+                            // Оставляем стандартную иконку для now
+                            // Иконку можно будет настроить через .vsct/.resx позже
                         }
+
+                        icon.Dispose();
+                        return;
                     }
                 }
 

@@ -5,8 +5,11 @@
   <Extern href="vsshlids.h"/>
 
   <Commands>
+
     <Groups>
-      <Group guid="guidDeepSeekAssistantVSPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+      <Group guid="guidDeepSeekAssistantVSPackageCmdSet"
+             id="MyMenuGroup"
+             priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
       </Group>
     </Groups>
@@ -16,12 +19,14 @@
               id="OpenDeepSeekChat"
               priority="0x0100"
               type="Button">
-        <Parent guid="guidDeepSeekAssistantVSPackageCmdSet" id="MyMenuGroup"/>
+        <Parent guid="guidDeepSeekAssistantVSPackageCmdSet"
+                id="MyMenuGroup"/>
         <Strings>
           <ButtonText>Open DeepSeek Chat</ButtonText>
         </Strings>
       </Button>
     </Buttons>
+
   </Commands>
 
   <Symbols>

@@ -32,7 +32,7 @@
 
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP"
-                DisplayName="Microsoft .NET Framework 4.8"
+                DisplayName="Microsoft .NET Framework"
                 Version="[4.8,)" />
   </Dependencies>
 
