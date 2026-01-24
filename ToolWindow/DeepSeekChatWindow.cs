@@ -1,76 +1,56 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.Shell;
+using System;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.Shell;
-using System.Drawing; // Для работы с иконками
-using System.Reflection; // Для загрузки ресурсов
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DeepSeekAssistantVSPackage.ToolWindows
 {
-    [Guid("6c5b550d-8e4a-4a5c-8b5a-7e9f3c1d2a4b")]
+    [Guid("3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d")]
     public class DeepSeekChatWindow : ToolWindowPane
     {
         public DeepSeekChatWindow() : base(null)
         {
             this.Caption = "DeepSeek Chat";
-
-            // Способ 1: Через BitmapResourceID (если есть ресурсы в .resx)
-            // this.BitmapResourceID = 4001;
-            // this.BitmapIndex = 1;
-
-            // Способ 2: Загрузка иконки из внедрённого ресурса
-            LoadIconFromEmbeddedResources();
-
-            var control = new DeepSeekChatWindowControl();
-            this.Content = control;
+            this.Content = new DeepSeekChatWindowControl();
         }
 
-        private void LoadIconFromEmbeddedResources()
+        public const string WindowGuid = "3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d";
+
+        /// <summary>
+        /// Показывает окно DeepSeek Chat.
+        /// </summary>
+        public static async Task<DeepSeekChatWindow> ShowAsync()
         {
-            try
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            // Получаем экземпляр окна через стандартный механизм Visual Studio
+            var window = await AsyncPackage.FindToolWindowAsync(
+                typeof(DeepSeekChatWindow),
+                id: 0, // ID окна (0 для единственного экземпляра)
+                create: true, // Создать окно, если оно не существует
+                cancellationToken: CancellationToken.None
+            ) as DeepSeekChatWindow;
+
+            if (window?.Frame == null)
             {
-                var assembly = Assembly.GetExecutingAssembly();
-
-                // Ищем ресурс с иконкой
-                // Формат: {Namespace}.{Папка}.{Файл}
-                var possibleNames = new[]
-                {
-                    "DeepSeekAssistantVSPackage.Resources.deepseek.ico",
-                    "DeepSeekAssistantVSPackage.Resources.DeepSeekIcon.ico",
-                    "DeepSeekAssistantVSPackage.deepseek.ico"
-                };
-
-                foreach (var resourceName in possibleNames)
-                {
-                    using var stream = assembly.GetManifestResourceStream(resourceName);
-                    if (stream != null)
-                    {
-                        // СОЗДАЁМ ИКОНКУ И НАЗНАЧАЕМ ЧЕРЕЗ ОКОННЫЙ HANDLE
-                        var icon = new Icon(stream);
-
-                        // Для ToolWindowPane нужно использовать Bitmap, а не Icon напрямую
-                        // Конвертируем Icon в Bitmap
-                        using (var bitmap = icon.ToBitmap())
-                        {
-                            // Получаем handle битмапа
-                            IntPtr hBitmap = bitmap.GetHbitmap();
-
-                            // В VS ToolWindow иконка устанавливается через ресурсы
-                            // Оставляем стандартную иконку для now
-                            // Иконку можно будет настроить через .vsct/.resx позже
-                        }
-
-                        icon.Dispose();
-                        return;
-                    }
-                }
-
-                // Если не нашли ресурс, оставляем стандартную иконку VS
-                System.Diagnostics.Debug.WriteLine("Icon resource not found");
+                throw new NotSupportedException("Не удалось создать окно инструментов.");
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error loading icon: {ex.Message}");
-            }
+
+            // Показываем окно
+            var windowFrame = (IVsWindowFrame)window.Frame;
+            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+
+            return window;
+        }
+
+        /// <summary>
+        /// Перегрузка метода для вызова из команд с передачей пакета.
+        /// </summary>
+        public static async Task<DeepSeekChatWindow> ShowAsync(AsyncPackage package)
+        {
+            // Для совместимости вызываем основной метод
+            return await ShowAsync();
         }
     }
 }
