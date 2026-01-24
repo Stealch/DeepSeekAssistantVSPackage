@@ -56,31 +56,33 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             return string.Empty;
         }
 
-        private async System.Threading.Tasks.Task SendButton_ClickAsync(object sender, RoutedEventArgs e)
+        private async void SendButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            try
+            await HandleSendMessageSafeAsync();
+        }
+
+        private async void InputTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter &&
+                !System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftShift) &&
+                !System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightShift))
             {
-                await SendMessageAsync().ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                AddSystemMessage($"Error: {ex.Message}");
+                e.Handled = true;
+                await HandleSendMessageSafeAsync();
             }
         }
 
-        private async System.Threading.Tasks.Task InputTextBox_KeyDownAsync(object sender, KeyEventArgs e)
+        private async System.Threading.Tasks.Task HandleSendMessageSafeAsync()
         {
-            if (e.Key == Key.Enter && !Keyboard.IsKeyDown(Key.LeftShift) && !Keyboard.IsKeyDown(Key.RightShift))
+            try
             {
-                try
-                {
-                    await SendMessageAsync().ConfigureAwait(false);
-                    e.Handled = true;
-                }
-                catch (Exception ex)
-                {
-                    AddSystemMessage($"Error: {ex.Message}");
-                }
+                await SendMessageAsync();
+            }
+            catch (System.Exception ex)
+            {
+                AddSystemMessage($"Error: {ex.Message}");
+                // Логирование для отладки
+                System.Diagnostics.Debug.WriteLine($"[DeepSeek] Error in HandleSendMessageSafeAsync: {ex}");
             }
         }
 
