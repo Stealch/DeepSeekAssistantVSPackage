@@ -1,30 +1,45 @@
-﻿<?xml version="1.0" ?>
-<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-	<Metadata>
-		<Identity Id="DeepSeekAssistantVSPackage.f98c9504-8a35-4542-8b82-1f4d16077b8f" Version="1.0" Language="en-US" Publisher="Лобанов Владимир" />
-		<DisplayName>DeepSeekAssistantVSPackage</DisplayName>
-		<Description>Empty VSIX Project.</Description>
-	</Metadata>
-	<Installation>
-		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
-	</Installation>
-	<Dependencies>
-		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-	</Dependencies>
-	<Assets>
-		<Asset Type="Microsoft.VisualStudio.ToolWindow" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|">
-			<ToolWindow>
-				<Name>DeepSeek Chat</Name>
-				<ID>6c5b550d-8e4a-4a5c-8b5a-7e9f3c1d2a4b</ID>
-				<Visibility>Docked</Visibility>
-				<Targets>Microsoft.VisualStudio.ToolWindow</Targets>
-			</ToolWindow>
-		</Asset>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011"
+                 xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Id="Stealch.DeepSeekAssistantVSPackage"
+              Version="1.0.0"
+              Language="en-US"
+              Publisher="Stealch" />
 
-		<Asset Type="Microsoft.VisualStudio.VsCommandTable" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
-		<Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
-	</Assets>
-	<Prerequisites>
-		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,17.0)" DisplayName="Visual Studio core editor" />
-	</Prerequisites>
+    <DisplayName>DeepSeek Assistant</DisplayName>
+    <Description xml:space="preserve">
+      Visual Studio extension providing DeepSeek AI chat tool window.
+    </Description>
+    <MoreInfo>https://github.com/Stealch/DeepSeekAssistantVSPackage</MoreInfo>
+
+    <InstalledProductRegistration
+      ProductName="DeepSeek Assistant"
+      ProductDetails="DeepSeek Assistant Visual Studio Package"
+      ProductVersion="1.0.0" />
+  </Metadata>
+
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Community"
+                        Version="[16.0,18.0)" />
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro"
+                        Version="[16.0,18.0)" />
+    <InstallationTarget Id="Microsoft.VisualStudio.Enterprise"
+                        Version="[16.0,18.0)" />
+  </Installation>
+
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP"
+                DisplayName="Microsoft .NET Framework"
+                Version="[4.8,)" />
+  </Dependencies>
+
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.VsPackage"
+           d:Source="Project"
+           Path="|%CurrentProject%;DeepSeekAssistantVSPackage.pkgdef" />
+    <Asset Type="Microsoft.VisualStudio.Menus"
+           d:Source="Project"
+           Path="DeepSeekAssistantVSPackage.vsct" />
+  </Assets>
 </PackageManifest>
