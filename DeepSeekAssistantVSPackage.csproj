@@ -105,12 +105,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="DeepseekAPILib\DeepseekAPILib.csproj">
-      <Project>{6677f691-03f8-4f11-a6ad-171742e3e719}</Project>
-      <Name>DeepseekAPILib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="ToolWindow\DeepSeekChatWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
