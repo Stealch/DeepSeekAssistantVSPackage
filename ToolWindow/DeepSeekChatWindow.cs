@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace DeepSeekAssistantVSPackage.ToolWindows
 {
     [Guid("3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d")]
@@ -71,10 +72,10 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
         /// <summary>
         /// Перегрузка метода для вызова из команд с передачей пакета.
         /// </summary>
-        public static async Task<DeepSeekChatWindow> ShowAsync(AsyncPackage package)
-        {
+//       public static async Task<DeepSeekChatWindow> ShowAsync(AsyncPackage package)
+//       {
             // Для совместимости вызываем основной метод
-            return await ShowAsync();
-        }
+//           return await ShowAsync();
+//       }
     }
 }

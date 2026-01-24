@@ -33,7 +33,7 @@ namespace DeepSeekAssistantVSPackage.Commands
             _ = ShowWindowAsync();
         }
 
-        private static async Task ShowWindowAsync()
+        private static async System.Threading.Tasks.Task ShowWindowAsync()
         {
             try
             {
