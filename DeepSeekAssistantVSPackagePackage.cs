@@ -15,6 +15,7 @@ namespace DeepSeekAssistantVSPackage
     public sealed class DeepSeekAssistantVSPackagePackage : AsyncPackage
     {
         public const string PackageGuidString = "b6216745-f7c2-486a-848d-5d89b93666f9";
+		public const string PackageCommandSetGuidString = "2c93c2f5-3df3-44be-b847-cfea5db0fd6d";
 
         #region Package Members
 
