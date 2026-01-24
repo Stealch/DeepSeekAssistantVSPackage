@@ -15,8 +15,8 @@ namespace DeepSeekAssistantVSPackage
     [ProvideToolWindow(typeof(DeepSeekChatWindow))]
     public sealed class DeepSeekAssistantVSPackagePackage : AsyncPackage
     {
-        public const string PackageGuidString = "b6216745-f7c2-486a-848d-5d89b93666f9";
-		public const string PackageCommandSetGuidString = "2c93c2f5-3df3-44be-b847-cfea5db0fd6d";
+        public const string PackageGuidString = "cec1d5b0-52cd-4eb6-8c3a-539740e42a34";
+        public const string PackageCommandSetGuidString = "2c93c2f5-3df3-44be-b847-cfea5db0fd6d";
 
         #region Package Members
 

@@ -17,7 +17,7 @@ namespace DeepSeekAssistantVSPackage
     /// </summary>
     internal sealed partial class PackageGuids
     {
-        public const string DeepSeekAssistantVSPackagePackageString = "b6216745-f7c2-486a-848d-5d89b93666f9";
+        public const string DeepSeekAssistantVSPackagePackageString = "cec1d5b0-52cd-4eb6-8c3a-539740e42a34";
         public const string DeepSeekAssistantVSPackagePackageCmdSetString = "2c93c2f5-3df3-44be-b847-cfea5db0fd6d";
         public static Guid DeepSeekAssistantVSPackagePackage = new Guid(DeepSeekAssistantVSPackagePackageString);
         public static Guid DeepSeekAssistantVSPackagePackageCmdSet = new Guid(DeepSeekAssistantVSPackagePackageCmdSetString);
