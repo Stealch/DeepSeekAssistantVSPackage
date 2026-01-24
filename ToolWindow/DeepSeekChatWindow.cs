@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Microsoft.VisualStudio.Shell.Interop;
 using System.Threading.Tasks;
 
 namespace DeepSeekAssistantVSPackage.ToolWindows
@@ -21,23 +21,38 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
         /// <summary>
         /// Показывает окно DeepSeek Chat.
         /// </summary>
+        /// <summary>
+        /// Показывает окно DeepSeek Chat.
+        /// </summary>
         public static async Task<DeepSeekChatWindow> ShowAsync(AsyncPackage package = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            // Для статического вызова используем 'await package.FindToolWindowAsync...'
-            // или глобальный провайдер услуг, если пакет не передан.
-            AsyncPackage targetPackage = package ?? (AsyncPackage)ServiceProvider.GlobalProvider.GetService(typeof(AsyncPackage));
+
+            // Получаем экземпляр пакета для вызова FindToolWindowAsync
+            AsyncPackage targetPackage = package;
+            if (targetPackage == null)
+            {
+                // Пытаемся получить пакет через глобальный провайдер услуг
+                var serviceProvider = ServiceProvider.GlobalProvider;
+                targetPackage = serviceProvider?.GetService(typeof(DeepSeekAssistantVSPackagePackage)) as AsyncPackage;
+
+                if (targetPackage == null)
+                {
+                    // Последняя попытка: получаем любой AsyncPackage
+                    targetPackage = serviceProvider?.GetService(typeof(AsyncPackage)) as AsyncPackage;
+                }
+            }
 
             if (targetPackage == null)
             {
-                throw new InvalidOperationException("Не удалось получить экземпляр пакета.");
+                throw new InvalidOperationException("Не удалось получить экземпляр пакета для открытия окна.");
             }
 
-            // Получаем экземпляр окна через стандартный механизм Visual Studio
+            // Получаем экземпляр окна
             var window = await targetPackage.FindToolWindowAsync(
                 typeof(DeepSeekChatWindow),
-                id: 0, // ID окна (0 для единственного экземпляра)
-                create: true, // Создать окно, если оно не существует
+                id: 0,
+                create: true,
                 cancellationToken: CancellationToken.None
             ) as DeepSeekChatWindow;
 
@@ -46,7 +61,7 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
                 throw new NotSupportedException("Не удалось создать окно инструментов.");
             }
 
-            // Показываем окно. Добавляем директиву using для Microsoft.VisualStudio.Shell.Interop
+            // Показываем окно
             var windowFrame = (Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
 

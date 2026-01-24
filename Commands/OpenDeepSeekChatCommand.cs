@@ -28,12 +28,21 @@ namespace DeepSeekAssistantVSPackage.Commands
 
         private static void Execute(object sender, EventArgs e)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            // Получаем пакет через глобальный сервис
-            var package = ServiceProvider.GlobalProvider.GetService(typeof(DeepSeekAssistantVSPackagePackage)) as AsyncPackage;
-            if (package != null)
+            // Используем перегрузку без параметра - будет использоваться параметр по умолчанию (null)
+            // Пакет будет найден автоматически внутри ShowAsync через ServiceProvider.GlobalProvider
+            _ = ShowWindowAsync();
+        }
+
+        private static async Task ShowWindowAsync()
+        {
+            try
             {
-                _ = DeepSeekChatWindow.ShowAsync(package);
+                await DeepSeekChatWindow.ShowAsync();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DeepSeek] Ошибка открытия окна: {ex.Message}");
+                // Можно показать сообщение пользователю через MessageBox
             }
         }
     }

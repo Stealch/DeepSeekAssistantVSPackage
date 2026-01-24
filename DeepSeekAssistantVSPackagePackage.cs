@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DeepSeekAssistantVSPackage.ToolWindows;
 using DeepSeekAssistantVSPackage.Commands;
+using ThreadTask = System.Threading.Tasks.Task;
 
 namespace DeepSeekAssistantVSPackage
 {
@@ -19,7 +20,7 @@ namespace DeepSeekAssistantVSPackage
 
         #region Package Members
 
-        protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override async ThreadTask InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
