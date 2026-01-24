@@ -2,6 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Microsoft.VisualStudio.Shell.Interop;
 using System.Threading.Tasks;
 
 namespace DeepSeekAssistantVSPackage.ToolWindows
@@ -20,12 +21,20 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
         /// <summary>
         /// Показывает окно DeepSeek Chat.
         /// </summary>
-        public static async Task<DeepSeekChatWindow> ShowAsync()
+        public static async Task<DeepSeekChatWindow> ShowAsync(AsyncPackage package = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            // Для статического вызова используем 'await package.FindToolWindowAsync...'
+            // или глобальный провайдер услуг, если пакет не передан.
+            AsyncPackage targetPackage = package ?? (AsyncPackage)ServiceProvider.GlobalProvider.GetService(typeof(AsyncPackage));
+
+            if (targetPackage == null)
+            {
+                throw new InvalidOperationException("Не удалось получить экземпляр пакета.");
+            }
 
             // Получаем экземпляр окна через стандартный механизм Visual Studio
-            var window = await AsyncPackage.FindToolWindowAsync(
+            var window = await targetPackage.FindToolWindowAsync(
                 typeof(DeepSeekChatWindow),
                 id: 0, // ID окна (0 для единственного экземпляра)
                 create: true, // Создать окно, если оно не существует
@@ -37,8 +46,8 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
                 throw new NotSupportedException("Не удалось создать окно инструментов.");
             }
 
-            // Показываем окно
-            var windowFrame = (IVsWindowFrame)window.Frame;
+            // Показываем окно. Добавляем директиву using для Microsoft.VisualStudio.Shell.Interop
+            var windowFrame = (Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
 
             return window;
