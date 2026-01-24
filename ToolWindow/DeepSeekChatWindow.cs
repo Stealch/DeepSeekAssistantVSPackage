@@ -21,9 +21,6 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
         /// <summary>
         /// Показывает окно DeepSeek Chat.
         /// </summary>
-        /// <summary>
-        /// Показывает окно DeepSeek Chat.
-        /// </summary>
         public static async Task<DeepSeekChatWindow> ShowAsync(AsyncPackage package = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
