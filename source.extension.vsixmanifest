@@ -12,15 +12,12 @@
 		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
 	</Dependencies>
 	<Assets>
-		<Asset Type="Microsoft.VisualStudio.ToolWindow" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|">
-			<ToolWindow>
-				<Name>DeepSeek Chat</Name>
-				<ID>6c5b550d-8e4a-4a5c-8b5a-7e9f3c1d2a4b</ID>
-				<Visibility>Docked</Visibility>
-				<Targets>Microsoft.VisualStudio.ToolWindow</Targets>
-			</ToolWindow>
-		</Asset>
-
+		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+		
+		<!-- УПРОЩЁННЫЙ Asset для окна инструментов -->
+		<Asset Type="Microsoft.VisualStudio.ToolWindow" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+		
+		<!-- Asset для команд -->
 		<Asset Type="Microsoft.VisualStudio.VsCommandTable" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
 		<Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
 	</Assets>
