@@ -13,6 +13,7 @@ namespace DeepSeekAssistantVSPackage
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [Guid(PackageGuidString)]
     [ProvideToolWindow(typeof(DeepSeekChatWindow))]
+	[ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class DeepSeekAssistantVSPackagePackage : AsyncPackage
     {
         public const string PackageGuidString = "cec1d5b0-52cd-4eb6-8c3a-539740e42a34";

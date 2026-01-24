@@ -50,6 +50,21 @@
     <Asset Type="Microsoft.VisualStudio.Menus"
            d:Source="Project"
            Path="DeepSeekAssistantVSPackage.vsct" />
+	<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project"
+		   d:ProjectName="%CurrentProject%"
+		   Path="|%CurrentProject%|" />
+    <Asset Type="Microsoft.VisualStudio.MenuAndCommands"
+		   d:Source="File"
+		   Path="DeepSeekAssistantVSPackage.vsct" />
+	<Asset Type="Microsoft.VisualStudio.ToolWindow"
+		   d:Source="Project"
+		   d:ProjectName="%CurrentProject%"
+		   Path="|%CurrentProject%|" />
+	<Asset Type="Microsoft.VisualStudio.Assembly"
+		   d:Source="Project"
+		   d:ProjectName="%CurrentProject%"
+		   Path="|%CurrentProject%|"
+		   AssemblyName="|%CurrentProject%|" />		   
   </Assets>
 
 </PackageManifest>
