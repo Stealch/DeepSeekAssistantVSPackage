@@ -17,8 +17,8 @@ namespace DeepSeekAssistantVSPackage.Commands
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
             {
-                var cmdId = new CommandID(PackageGuids.DeepSeekAssistantVSPackagePackageCmdSet, PackageIds.OpenDeepSeekChatCommandId);
-                var cmd = new MenuCommand(Execute, cmdId);
+                CommandID cmdId = new CommandID(PackageGuids.DeepSeekAssistantVSPackagePackageCmdSet, PackageIds.OpenDeepSeekChatCommandId);
+                MenuCommand cmd = new MenuCommand(Execute, cmdId);
                 commandService.AddCommand(cmd);
             }
 
@@ -33,7 +33,7 @@ namespace DeepSeekAssistantVSPackage.Commands
             _ = ShowWindowAsync();
         }
 
-        private static async System.Threading.Tasks.Task ShowWindowAsync()
+        private static async ThreadTask ShowWindowAsync()
         {
             try
             {
