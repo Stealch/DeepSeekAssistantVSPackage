@@ -10,6 +10,17 @@ namespace DeepSeekAssistantVSPackage.Commands
 {
     internal sealed class OpenDeepSeekChatCommand
     {
+        private static void OnBeforeQueryStatus(object sender, EventArgs e)
+        {
+            var menuCommand = sender as OleMenuCommand;
+            if (menuCommand != null)
+            {
+                // Всегда активна
+                menuCommand.Enabled = true;
+                menuCommand.Visible = true;
+                menuCommand.Supported = true;
+            }
+        }
         public static async ThreadTask InitializeAsync(AsyncPackage package)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
@@ -18,18 +29,22 @@ namespace DeepSeekAssistantVSPackage.Commands
             if (commandService != null)
             {
                 CommandID cmdId = new CommandID(PackageGuids.DeepSeekAssistantVSPackagePackageCmdSet, PackageIds.OpenDeepSeekChatCommandId);
-                MenuCommand cmd = new MenuCommand(Execute, cmdId);
+
+                OleMenuCommand cmd = new OleMenuCommand(Execute, cmdId)
+                {
+                    Enabled = true,
+                    Visible = true
+                };
+                
+                cmd.BeforeQueryStatus += OnBeforeQueryStatus;
                 commandService.AddCommand(cmd);
             }
 
-            // Явно возвращаем управление, устраняя CS0161
             await ThreadTask.CompletedTask;
         }
 
         private static void Execute(object sender, EventArgs e)
         {
-            // Используем перегрузку без параметра - будет использоваться параметр по умолчанию (null)
-            // Пакет будет найден автоматически внутри ShowAsync через ServiceProvider.GlobalProvider
             _ = ShowWindowAsync();
         }
 
@@ -42,7 +57,6 @@ namespace DeepSeekAssistantVSPackage.Commands
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[DeepSeek] Ошибка открытия окна: {ex.Message}");
-                // Можно показать сообщение пользователю через MessageBox
             }
         }
     }
