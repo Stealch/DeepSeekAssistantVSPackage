@@ -129,7 +129,9 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\deepseek.ico" />
+    <Content Include="Resources\deepseek.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DeepSeekAPILib">

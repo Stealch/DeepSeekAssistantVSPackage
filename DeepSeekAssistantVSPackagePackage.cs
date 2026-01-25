@@ -10,10 +10,17 @@ using ThreadTask = System.Threading.Tasks.Task;
 
 namespace DeepSeekAssistantVSPackage
 {
+    #region Product Registration
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
+    [InstalledProductRegistration(
+    "DeepSeek Assistant",
+    "DeepSeek Assistant Visual Studio Package",
+    "1.0")]
     [Guid(PackageGuidString)]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(DeepSeekChatWindow))]
 	[ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
+    #endregion
     public sealed class DeepSeekAssistantVSPackagePackage : AsyncPackage
     {
         public const string PackageGuidString = "cec1d5b0-52cd-4eb6-8c3a-539740e42a34";
