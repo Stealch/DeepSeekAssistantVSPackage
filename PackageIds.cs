@@ -7,6 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+// PackageIds.cs
 
 namespace DeepSeekAssistantVSPackage
 {

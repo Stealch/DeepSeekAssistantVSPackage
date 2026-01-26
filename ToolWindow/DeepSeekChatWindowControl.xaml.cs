@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+// DeepSeekChatWindowControl.xaml.cs
 namespace DeepSeekAssistantVSPackage.ToolWindows
 {
     public partial class DeepSeekChatWindowControl : UserControl

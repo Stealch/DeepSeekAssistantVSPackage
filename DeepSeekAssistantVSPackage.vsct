@@ -4,7 +4,7 @@
   <Extern href="stdidcmd.h"/>
   <Extern href="vsshlids.h"/>
 
-  <Commands>
+  <Commands package="guidDeepSeekAssistantVSPackagePackage">
 
     <Groups>
       <!-- Группа для меню Tools -->
@@ -35,10 +35,10 @@
     <!-- GUID пакета (должен совпадать с PackageGuidString) -->
     <GuidSymbol name="guidDeepSeekAssistantVSPackagePackage"
                 value="{cec1d5b0-52cd-4eb6-8c3a-539740e42a34}" />
-	 <!-- GUID окна чата (должен совпадать с ToolWindowString в Package.cs) -->
+	 <!-- GUID окна чата (должен совпадать с ToolWindowString в PackageIds.cs) -->
 	  <GuidSymbol name="guidDeepSeekChatToolWindow"
 				value="{3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d}" />
-    <!-- GUID набора команд (должен совпадать с CommandSet в Package.cs) -->
+    <!-- GUID набора команд (должен совпадать с CommandSet в PackageIds.cs) -->
     <GuidSymbol name="guidDeepSeekAssistantVSPackagePackageCmdSet"
                 value="{2c93c2f5-3df3-44be-b847-cfea5db0fd6d}">
       <IDSymbol name="OpenDeepSeekChatCommandId" value="0x0100"/>

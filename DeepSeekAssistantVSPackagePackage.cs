@@ -6,6 +6,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 
+// DeepSeekAssistantVSPackagePackage.cs
 
 namespace DeepSeekAssistantVSPackage
 {
@@ -29,6 +30,8 @@ namespace DeepSeekAssistantVSPackage
 
         #region Package Members
 
+        private static DeepSeekAssistantVSPackagePackage _instance;
+        public static DeepSeekAssistantVSPackagePackage Instance => _instance;
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             // КРИТИЧЕСКИ ВАЖНО: вызов базовой инициализации
@@ -39,6 +42,7 @@ namespace DeepSeekAssistantVSPackage
             // Инициализируем команду открытия окна
             await OpenDeepSeekChatCommand.InitializeAsync(this);
         }
+
 
         #endregion
     }
