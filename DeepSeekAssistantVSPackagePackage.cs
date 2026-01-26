@@ -3,6 +3,8 @@ using DeepSeekAssistantVSPackage.ToolWindows;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -40,11 +42,24 @@ namespace DeepSeekAssistantVSPackage
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             _instance = this;
+            AppDomain.CurrentDomain.AssemblyResolve += ResolveDeepSeekLib;
 
             // Инициализируем команду открытия окна
             await OpenDeepSeekChatCommand.InitializeAsync(this);
         }
+        private static Assembly ResolveDeepSeekLib(object sender, ResolveEventArgs e)
+        {
+            string assemblyName = e.Name;
+            if (assemblyName.StartsWith("DeepSeekAPILib", StringComparison.Ordinal))
+                return null;
 
+            var baseDir = Path.GetDirectoryName(typeof(DeepSeekAssistantVSPackagePackage).Assembly.Location);
+            var dllPath = Path.Combine(baseDir, "Libs", "DeepSeekAPILib.dll");
+
+            return File.Exists(dllPath)
+                ? Assembly.LoadFrom(dllPath)
+                : null;
+        }
 
         #endregion
     }

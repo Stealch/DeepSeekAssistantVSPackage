@@ -89,14 +89,13 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             catch (System.Exception ex)
             {
                 AddSystemMessage($"Error: {ex.Message}");
-                // Логирование для отладки
                 System.Diagnostics.Debug.WriteLine($"[DeepSeek] Error in HandleSendMessageSafeAsync: {ex}");
             }
         }
 
         private async System.Threading.Tasks.Task SendMessageAsync()
         {
-            var message = InputTextBox.Text.Trim();
+            string message = InputTextBox.Text.Trim();
             if (string.IsNullOrEmpty(message) || _apiClient == null)
                 return;
 
@@ -128,7 +127,7 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             ChatMessages.Add(new ChatMessageItem
             {
                 Message = message,
-                BackgroundColor = new SolidColorBrush(Color.FromRgb(0, 120, 215)) // Синий
+                BackgroundColor = new SolidColorBrush(Color.FromRgb(0, 120, 215))
             });
             ScrollToBottom();
         }
@@ -138,7 +137,7 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             ChatMessages.Add(new ChatMessageItem
             {
                 Message = message,
-                BackgroundColor = new SolidColorBrush(Color.FromRgb(30, 30, 30)) // Темно-серый
+                BackgroundColor = new SolidColorBrush(Color.FromRgb(30, 30, 30))
             });
             ScrollToBottom();
         }
@@ -148,17 +147,36 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             ChatMessages.Add(new ChatMessageItem
             {
                 Message = message,
-                BackgroundColor = new SolidColorBrush(Color.FromRgb(100, 50, 0)) // Оранжевый
+                BackgroundColor = new SolidColorBrush(Color.FromRgb(100, 50, 0))
             });
-            ScrollToBottom();
+
+            if (this.IsInitialized)
+            {
+                ScrollToBottom();
+            }
         }
 
         private void ScrollToBottom()
         {
-            // Получаем ScrollViewer который оборачивает ChatHistory
-            if (VisualTreeHelper.GetParent(ChatHistory) is ScrollViewer scrollViewer)
+            if (ChatHistory.Items.Count > 0)
             {
-                scrollViewer.ScrollToEnd();
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
+                    new Action(() =>
+                    {
+                        try
+                        {
+                            // var lastItem = ChatHistory.Items[ChatHistory.Items.Count - 1];
+                            //  ChatHistory.ScrollIntoView(lastItem);
+                            // Временно отключить скроллинг
+                            // TODO: Implement proper scrolling
+                            return;
+                        }
+                        catch (Exception ex)
+                        {
+                            AddSystemMessage($"Scroll error: {ex.Message}");
+                            System.Diagnostics.Debug.WriteLine($"[DeepSeek] Scroll error: {ex.Message}");
+                        }
+                    }));
             }
         }
     }
