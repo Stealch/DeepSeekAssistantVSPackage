@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DeepSeekAssistantVSPackage.ToolWindows
 {
-    [Guid("3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d")]
+    [Guid(PackageGuids.DeepSeekChatToolWindowString)]
     public class DeepSeekChatWindow : ToolWindowPane
     {
         public DeepSeekChatWindow() : base(null)
@@ -15,7 +15,7 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             this.Content = new DeepSeekChatWindowControl();
         }
 
-        public const string WindowGuid = "3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d";
+        public const string WindowGuid = PackageGuids.DeepSeekChatToolWindowString;
 
         /// <summary>
         /// Показывает окно DeepSeek Chat.

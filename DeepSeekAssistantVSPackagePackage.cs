@@ -15,16 +15,17 @@ namespace DeepSeekAssistantVSPackage
     "DeepSeek Assistant",
     "DeepSeek Assistant Visual Studio Package",
     "1.0")]
-    [Guid(PackageGuidString)]
+    //[Guid(PackageGuidString)]
+    [Guid(PackageGuids.DeepSeekAssistantVSPackagePackageString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(DeepSeekChatWindow))]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     #endregion
     public sealed class DeepSeekAssistantVSPackagePackage : AsyncPackage
     {
-        public const string PackageGuidString = "cec1d5b0-52cd-4eb6-8c3a-539740e42a34";
-        public const string PackageCommandSetGuidString = "2c93c2f5-3df3-44be-b847-cfea5db0fd6d";
-        public const string DeepSeekChatToolWindowString = "3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d";
+        public const string PackageGuidString = PackageGuids.DeepSeekAssistantVSPackagePackageString;
+        public const string PackageCommandSetGuidString = PackageGuids.DeepSeekAssistantVSPackagePackageCmdSetString;
+        public const string DeepSeekChatToolWindowString = PackageGuids.DeepSeekChatToolWindowString;
 
         #region Package Members
 

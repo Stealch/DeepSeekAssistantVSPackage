@@ -12,22 +12,16 @@ namespace DeepSeekAssistantVSPackage
 {
     using System;
 
-    /// <summary>
-    /// Helper class that exposes all GUIDs used across VS Package.
-    /// </summary>
     internal sealed partial class PackageGuids
     {
         public const string DeepSeekAssistantVSPackagePackageString = "cec1d5b0-52cd-4eb6-8c3a-539740e42a34";
         public const string DeepSeekAssistantVSPackagePackageCmdSetString = "2c93c2f5-3df3-44be-b847-cfea5db0fd6d";
 		public const string DeepSeekChatToolWindowString = "3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d";
-        public static Guid DeepSeekAssistantVSPackagePackage = new Guid(DeepSeekAssistantVSPackagePackageString);
-        public static Guid DeepSeekAssistantVSPackagePackageCmdSet = new Guid(DeepSeekAssistantVSPackagePackageCmdSetString);
-		public static Guid DeepSeekChatToolWindow = new Guid(DeepSeekChatToolWindowString);
+        public static readonly Guid DeepSeekAssistantVSPackagePackage = new Guid(DeepSeekAssistantVSPackagePackageString);
+        public static readonly Guid DeepSeekAssistantVSPackagePackageCmdSet = new Guid(DeepSeekAssistantVSPackagePackageCmdSetString);
+		public static readonly Guid DeepSeekChatToolWindow = new Guid(DeepSeekChatToolWindowString);
     }
 
-    /// <summary>
-    /// Helper class that encapsulates all CommandIDs uses across VS Package.
-    /// </summary>
     internal sealed partial class PackageIds
     {
         public const int OpenDeepSeekChatCommandId = 0x0100;
