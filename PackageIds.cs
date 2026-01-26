@@ -12,17 +12,29 @@
 namespace DeepSeekAssistantVSPackage
 {
     using System;
-
+    #region GUIDs
     internal sealed partial class PackageGuids
     {
         public const string DeepSeekAssistantVSPackagePackageString = "cec1d5b0-52cd-4eb6-8c3a-539740e42a34";
         public const string DeepSeekAssistantVSPackagePackageCmdSetString = "2c93c2f5-3df3-44be-b847-cfea5db0fd6d";
 		public const string DeepSeekChatToolWindowString = "3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d";
+        public const string VsOutputWindowString = "{34E76E81-EE4A-11D0-AE2E-00A0C90FFFC3}";
+        public const string VsErrorListString = "{D78612C7-9962-4B83-95D9-268046DAD23A}";
+        public const string VsTaskListString = "{4A9B7E51-AA16-11D0-A8C5-00A0C921A4D2}";
+        public const string VsToolboxString = "{B1E99781-AB81-11D0-B683-00AA00A3EE26}";
+        public const string VsSolutionExplorerString = "{3AE79031-E1BC-11D0-8F78-00A0C9110057}";
+        public const string VsPropertyWindowString = "{EEFA5220-E298-11D0-8F78-00A0C9110057}";
         public static readonly Guid DeepSeekAssistantVSPackagePackage = new Guid(DeepSeekAssistantVSPackagePackageString);
         public static readonly Guid DeepSeekAssistantVSPackagePackageCmdSet = new Guid(DeepSeekAssistantVSPackagePackageCmdSetString);
 		public static readonly Guid DeepSeekChatToolWindow = new Guid(DeepSeekChatToolWindowString);
+        public static readonly Guid VsOutputWindow = new Guid(VsOutputWindowString);
+        public static readonly Guid VsErrorList = new Guid(VsErrorListString);
+        public static readonly Guid VsTaskList = new Guid(VsTaskListString);
+        public static readonly Guid VsToolbox = new Guid(VsToolboxString);
+        public static readonly Guid VsSolutionExplorer = new Guid(VsSolutionExplorerString);
+        public static readonly Guid VsPropertyWindow = new Guid(VsPropertyWindowString);
     }
-
+    #endregion
     internal sealed partial class PackageIds
     {
         public const int OpenDeepSeekChatCommandId = 0x0100;

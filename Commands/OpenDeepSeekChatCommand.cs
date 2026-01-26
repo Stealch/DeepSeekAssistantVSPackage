@@ -52,9 +52,24 @@ namespace DeepSeekAssistantVSPackage.Commands
             await System.Threading.Tasks.Task.CompletedTask;
         }
 
-        private static void Execute(object sender, EventArgs e)
+        private static async void Execute(object sender, EventArgs e)
         {
-            _ = ShowWindowAsync();
+            var package = DeepSeekAssistantVSPackagePackage.Instance;
+            if (package != null)
+            {
+                try
+                {
+                    await package.ShowToolWindowAsync(
+                        typeof(DeepSeekChatWindow),
+                        0,
+                        create: true,
+                        cancellationToken: package.DisposalToken);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[DeepSeek] Error: {ex.Message}");
+                }
+            }
         }
 
         private static async System.Threading.Tasks.Task ShowWindowAsync()

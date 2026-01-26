@@ -23,7 +23,16 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             ChatMessages = new ObservableCollection<ChatMessageItem>();
             ChatHistory.ItemsSource = ChatMessages;
 
-            InitializeServices();
+            try
+            {
+                InitializeServices();
+            }
+            catch (Exception ex)
+            {
+                // Показываем сообщение об ошибке
+                AddSystemMessage($"Initialization error: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[DeepSeek] Control init error: {ex}");
+            }
         }
 
         private void InitializeServices()
@@ -97,15 +106,16 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
 
             try
             {
-                // Отправляем запрос
-                var chatMessage = new ChatMessage("user", message);
-                var messages = new System.Collections.Generic.List<ChatMessage> { chatMessage };
+                /* // Отправляем запрос
+                 var chatMessage = new ChatMessage("user", message);
+                 var messages = new System.Collections.Generic.List<ChatMessage> { chatMessage };
 
-                // TODO: Добавить streaming
-                var response = await _apiClient.SendChatSimpleAsync(messages);
+                 // TODO: Добавить streaming
+                 var response = await _apiClient.SendChatSimpleAsync(messages);
 
-                // Добавляем ответ ассистента
-                AddAssistantMessage(response);
+                 // Добавляем ответ ассистента
+                 AddAssistantMessage(response);*/
+                AddAssistantMessage("API service is not available in this version.");
             }
             catch (Exception ex)
             {
@@ -145,11 +155,10 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
 
         private void ScrollToBottom()
         {
-            if (ChatHistory.Items.Count > 0)
+            // Получаем ScrollViewer который оборачивает ChatHistory
+            if (VisualTreeHelper.GetParent(ChatHistory) is ScrollViewer scrollViewer)
             {
-                var border = (Border)VisualTreeHelper.GetChild(ChatHistory, 0);
-                var scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(border, 0);
-                scrollViewer.ScrollToBottom();
+                scrollViewer.ScrollToEnd();
             }
         }
     }

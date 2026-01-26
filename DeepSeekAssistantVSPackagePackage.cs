@@ -39,6 +39,8 @@ namespace DeepSeekAssistantVSPackage
 
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
+            _instance = this;
+
             // Инициализируем команду открытия окна
             await OpenDeepSeekChatCommand.InitializeAsync(this);
         }

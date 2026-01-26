@@ -67,6 +67,7 @@
                d:ProjectName="%CurrentProject%"
                Path="|%CurrentProject%|"
                AssemblyName="|%CurrentProject%|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="Libs\DeepseekAPILib.dll" AssemblyName="DeepseekAPILib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     </Assets>
 
 </PackageManifest>
