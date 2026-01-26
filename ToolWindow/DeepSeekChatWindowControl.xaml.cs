@@ -157,25 +157,17 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
         }
 
         private void ScrollToBottom()
-        {
-            if (ChatHistory.Items.Count == 0)
-                return;
+{
+    if (ChatHistory.Items.Count == 0)
+        return;
 
-            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, new Action(() =>
-            {
-                try
-                {
-                    var border = VisualTreeHelper.GetChild(ChatHistory, 0) as Decorator;
-                    var scrollViewer = border?.Child as ScrollViewer;
-                    scrollViewer?.ScrollToEnd();
-                }
-                catch (Exception ex)
-                {
-                    AddSystemMessage($"Scroll error: {ex.Message}");
-                    System.Diagnostics.Debug.WriteLine($"[DeepSeek] Scroll error: {ex.Message}");
-                }
-            }));
-        }
+    Dispatcher.BeginInvoke(new Action(() =>
+    {
+        ChatHistory.UpdateLayout();
+        ChatHistory.ScrollIntoView(ChatHistory.Items[ChatHistory.Items.Count - 1]);
+    }));
+}
+
     }
 
     public class ChatMessageItem
