@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-// DeepSeekChatWindowControl.xaml.cs
+// ToolWindow\DeepSeekChatWindowControl.xaml.cs
 namespace DeepSeekAssistantVSPackage.ToolWindows
 {
     public partial class DeepSeekChatWindowControl : UserControl
@@ -105,7 +105,7 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
 
             try
             {
-                /* // Отправляем запрос
+                // Отправляем запрос
                  var chatMessage = new ChatMessage("user", message);
                  var messages = new System.Collections.Generic.List<ChatMessage> { chatMessage };
 
@@ -113,8 +113,8 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
                  var response = await _apiClient.SendChatSimpleAsync(messages);
 
                  // Добавляем ответ ассистента
-                 AddAssistantMessage(response);*/
-                AddAssistantMessage("API service is not available in this version.");
+                 AddAssistantMessage(response);
+                // AddAssistantMessage("API service is not available in this version.");
             }
             catch (Exception ex)
             {
@@ -158,26 +158,23 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
 
         private void ScrollToBottom()
         {
-            if (ChatHistory.Items.Count > 0)
+            if (ChatHistory.Items.Count == 0)
+                return;
+
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, new Action(() =>
             {
-                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
-                    new Action(() =>
-                    {
-                        try
-                        {
-                            // var lastItem = ChatHistory.Items[ChatHistory.Items.Count - 1];
-                            //  ChatHistory.ScrollIntoView(lastItem);
-                            // Временно отключить скроллинг
-                            // TODO: Implement proper scrolling
-                            return;
-                        }
-                        catch (Exception ex)
-                        {
-                            AddSystemMessage($"Scroll error: {ex.Message}");
-                            System.Diagnostics.Debug.WriteLine($"[DeepSeek] Scroll error: {ex.Message}");
-                        }
-                    }));
-            }
+                try
+                {
+                    var border = VisualTreeHelper.GetChild(ChatHistory, 0) as Decorator;
+                    var scrollViewer = border?.Child as ScrollViewer;
+                    scrollViewer?.ScrollToEnd();
+                }
+                catch (Exception ex)
+                {
+                    AddSystemMessage($"Scroll error: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"[DeepSeek] Scroll error: {ex.Message}");
+                }
+            }));
         }
     }
 

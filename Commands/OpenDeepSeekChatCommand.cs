@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 
-// OpenDeepSeekChatCommand.cs
+// Commands\OpenDeepSeekChatCommand.cs
 namespace DeepSeekAssistantVSPackage.Commands
 {
     [Guid(PackageGuids.DeepSeekAssistantVSPackagePackageCmdSetString)]
