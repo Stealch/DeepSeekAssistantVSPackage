@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -33,7 +32,7 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
                 var serviceProvider = ServiceProvider.GlobalProvider;
                 targetPackage = serviceProvider?.GetService(typeof(DeepSeekAssistantVSPackagePackage)) as AsyncPackage ?? serviceProvider?.GetService(typeof(AsyncPackage)) as AsyncPackage;
 
-                    // Последняя попытка: получаем любой AsyncPackage
+                // Последняя попытка: получаем любой AsyncPackage
 
             }
 
@@ -65,10 +64,10 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
         /// <summary>
         /// Перегрузка метода для вызова из команд с передачей пакета.
         /// </summary>
-//       public static async Task<DeepSeekChatWindow> ShowAsync(AsyncPackage package)
-//       {
-            // Для совместимости вызываем основной метод
-//           return await ShowAsync();
-//       }
+        //       public static async Task<DeepSeekChatWindow> ShowAsync(AsyncPackage package)
+        //       {
+        // Для совместимости вызываем основной метод
+        //           return await ShowAsync();
+        //       }
     }
 }

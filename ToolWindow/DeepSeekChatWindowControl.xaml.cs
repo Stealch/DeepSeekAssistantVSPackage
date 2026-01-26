@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using DeepseekAPILib;
+﻿using DeepseekAPILib;
 using DeepseekAPILib.OAuth;
 using DeepseekAPILib.Services;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace DeepSeekAssistantVSPackage.ToolWindows
 {

@@ -1,12 +1,11 @@
-﻿using Microsoft.VisualStudio.Shell;
+﻿using DeepSeekAssistantVSPackage.Commands;
+using DeepSeekAssistantVSPackage.ToolWindows;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
-using DeepSeekAssistantVSPackage.ToolWindows;
-using DeepSeekAssistantVSPackage.Commands;
-using ThreadTask = System.Threading.Tasks.Task;
+
 
 namespace DeepSeekAssistantVSPackage
 {
@@ -19,17 +18,17 @@ namespace DeepSeekAssistantVSPackage
     [Guid(PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(DeepSeekChatWindow))]
-	[ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     #endregion
     public sealed class DeepSeekAssistantVSPackagePackage : AsyncPackage
     {
         public const string PackageGuidString = "cec1d5b0-52cd-4eb6-8c3a-539740e42a34";
         public const string PackageCommandSetGuidString = "2c93c2f5-3df3-44be-b847-cfea5db0fd6d";
-		public const string DeepSeekChatToolWindowString = "3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d";
+        public const string DeepSeekChatToolWindowString = "3a13c9e9-2072-4ae1-8d25-0f2b1c14fc1d";
 
         #region Package Members
 
-        protected override async ThreadTask InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             // КРИТИЧЕСКИ ВАЖНО: вызов базовой инициализации
             await base.InitializeAsync(cancellationToken, progress);

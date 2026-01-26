@@ -1,10 +1,7 @@
-﻿using Microsoft.VisualStudio.Shell;
+﻿using DeepSeekAssistantVSPackage.ToolWindows;
+using Microsoft.VisualStudio.Shell;
 using System;
 using System.ComponentModel.Design;
-using System.Threading;
-using System.Threading.Tasks;
-using DeepSeekAssistantVSPackage.ToolWindows;
-using ThreadTask = System.Threading.Tasks.Task;
 
 namespace DeepSeekAssistantVSPackage.Commands
 {
@@ -21,7 +18,7 @@ namespace DeepSeekAssistantVSPackage.Commands
                 menuCommand.Supported = true;
             }
         }
-        public static async ThreadTask InitializeAsync(AsyncPackage package)
+        public static async System.Threading.Tasks.Task InitializeAsync(AsyncPackage package)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
@@ -35,12 +32,12 @@ namespace DeepSeekAssistantVSPackage.Commands
                     Enabled = true,
                     Visible = true
                 };
-                
+
                 cmd.BeforeQueryStatus += OnBeforeQueryStatus;
                 commandService.AddCommand(cmd);
             }
 
-            await ThreadTask.CompletedTask;
+            await System.Threading.Tasks.Task.CompletedTask;
         }
 
         private static void Execute(object sender, EventArgs e)
@@ -48,7 +45,7 @@ namespace DeepSeekAssistantVSPackage.Commands
             _ = ShowWindowAsync();
         }
 
-        private static async ThreadTask ShowWindowAsync()
+        private static async System.Threading.Tasks.Task ShowWindowAsync()
         {
             try
             {
