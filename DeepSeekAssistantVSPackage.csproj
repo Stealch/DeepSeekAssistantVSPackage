@@ -67,6 +67,7 @@
     <Compile Include="ToolWindow\DeepSeekChatWindowControl.xaml.cs">
       <DependentUpon>DeepSeekChatWindowControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ChatViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source.extension.vsixmanifest">

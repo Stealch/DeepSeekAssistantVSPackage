@@ -16,8 +16,10 @@ namespace DeepSeekAssistantVSPackage.Options
             statusLabel.Text = $"Testing connection...\n{status}";
 
             // Автоматически закрываем через 30 секунд
-            var timer = new Timer();
-            timer.Interval = 30000;
+            Timer timer = new Timer
+            {
+                Interval = 30000
+            };
             timer.Tick += (s, e) =>
             {
                 timer.Stop();
@@ -39,19 +41,25 @@ namespace DeepSeekAssistantVSPackage.Options
             this.MaximizeBox = false;
             this.MinimizeBox = false;
 
-            var panel = new Panel();
-            panel.Dock = DockStyle.Fill;
-            panel.Padding = new Padding(20);
+            Panel panel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(20)
+            };
 
-            statusLabel = new Label();
-            statusLabel.Dock = DockStyle.Fill;
-            statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            statusLabel.Font = new System.Drawing.Font("Segoe UI", 10);
+            statusLabel = new Label
+            {
+                Dock = DockStyle.Fill,
+                TextAlign = System.Drawing.ContentAlignment.MiddleCenter,
+                Font = new System.Drawing.Font("Segoe UI", 10)
+            };
 
-            var cancelButton = new Button();
-            cancelButton.Text = "Cancel";
-            cancelButton.Size = new System.Drawing.Size(80, 30);
-            cancelButton.Location = new System.Drawing.Point(160, 80);
+            Button cancelButton = new Button
+            {
+                Text = "Cancel",
+                Size = new System.Drawing.Size(80, 30),
+                Location = new System.Drawing.Point(160, 80)
+            };
             cancelButton.Click += (s, e) =>
             {
                 _cancellationTokenSource.Cancel();

@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -291,29 +292,84 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
 
         private async System.Threading.Tasks.Task SendTestMessageAsync()
         {
+            string message = InputTextBox.Text.Trim();
             InputTextBox.Clear();
-            AddUserMessage("/test");
+
+            AddUserMessage(message);
 
             try
             {
-                var testMessage = new ChatMessage("user", "Hello! Please respond with a short greeting.");
+                if (_apiClient == null)
+                {
+                    AddSystemMessage("❌ API client not initialized.");
+                    return;
+                }
+
+                // Показываем диагностическую информацию
+                AddSystemMessage($"🔍 Testing connection...");
+
+                // Можно добавить диагностику
+                AddSystemMessage($"API Client: {_apiClient.GetType().Name}");
+                AddSystemMessage($"Base URL: {_apiClient.BaseUrl}");
+                AddSystemMessage($"Has API Key: {!string.IsNullOrEmpty(_apiClient.ApiKey)}");
+
+                var testMessage = new ChatMessage("user", "Hello! Say 'OK' if you can hear me.");
                 var messages = new System.Collections.Generic.List<ChatMessage> { testMessage };
 
-                var response = await _apiClient.SendChatSimpleAsync(messages, maxTokens: 100);
+                AddSystemMessage("🔄 Sending test message...");
 
-                if (!string.IsNullOrEmpty(response))
+                // Попробуем с коротким сообщением и таймаутом
+                var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(10));
+
+                try
                 {
-                    AddAssistantMessage(response);
-                    AddSystemMessage("✅ Test successful! API is responding correctly.");
+                    var response = await _apiClient.SendChatSimpleAsync(messages, maxTokens: 10)
+                        .ConfigureAwait(false);
+
+                    if (!string.IsNullOrEmpty(response))
+                    {
+                        AddAssistantMessage(response);
+                        AddSystemMessage("✅ Test successful! API is responding.");
+                    }
+                    else
+                    {
+                        AddSystemMessage("⚠️ Received empty response.");
+                    }
                 }
-                else
+                catch (System.OperationCanceledException)
                 {
-                    AddSystemMessage("⚠️ Test completed but received empty response.");
+                    AddSystemMessage("⏱️ Request timeout (10 seconds).");
+                }
+            }
+            catch (System.Net.Http.HttpRequestException httpEx)
+            {
+                AddSystemMessage($"🌐 Network Error: {httpEx.Message}");
+
+                // Детальная диагностика
+                if (httpEx.InnerException != null)
+                {
+                    AddSystemMessage($"Inner: {httpEx.InnerException.GetType().Name}: {httpEx.InnerException.Message}");
+                }
+
+                // Проверка конкретных ошибок
+                if (httpEx.Message.Contains("403") || httpEx.Message.Contains("Forbidden"))
+                {
+                    AddSystemMessage("⚠️ 403 Forbidden - check API key or User-Agent");
+                }
+                else if (httpEx.Message.Contains("404"))
+                {
+                    AddSystemMessage("⚠️ 404 Not Found - check API endpoint URL");
+                }
+                else if (httpEx.InnerException is System.Net.WebException webEx)
+                {
+                    AddSystemMessage($"🔒 SSL/TLS Error: {webEx.Message}");
+                    AddSystemMessage("Tip: This app requires TLS 1.2 or higher");
                 }
             }
             catch (Exception ex)
             {
-                AddSystemMessage($"❌ Test failed: {ex.Message}");
+                AddSystemMessage($"❌ Error: {ex.Message}");
+                AddSystemMessage($"Type: {ex.GetType().Name}");
             }
         }
 
@@ -399,6 +455,12 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
 
         private void AddUserMessage(string message)
         {
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.BeginInvoke((Action)(() => AddUserMessage(message)));
+                return;
+            }
+
             ChatMessages.Add(new ChatMessageItem
             {
                 Message = message,
@@ -409,6 +471,12 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
 
         private void AddAssistantMessage(string message)
         {
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.BeginInvoke((Action)(() => AddAssistantMessage(message)));
+                return;
+            }
+
             ChatMessages.Add(new ChatMessageItem
             {
                 Message = message,
@@ -419,6 +487,13 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
 
         private void AddSystemMessage(string message)
         {
+            // Добавляем сообщение в UI потоке
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.BeginInvoke((Action)(() => AddSystemMessage(message)));
+                return;
+            }
+
             ChatMessages.Add(new ChatMessageItem
             {
                 Message = $"[System] {message}",
@@ -428,17 +503,89 @@ namespace DeepSeekAssistantVSPackage.ToolWindows
             ScrollToBottom();
         }
 
+
         private void ScrollToBottom()
         {
             if (ChatHistory.Items.Count == 0)
                 return;
 
-            // Используем классический BeginInvoke
+            // Всегда через Dispatcher, но с проверкой
             Dispatcher.BeginInvoke((Action)(() =>
             {
-                ChatHistory.UpdateLayout();
-                ChatHistory.ScrollIntoView(ChatHistory.Items[ChatHistory.Items.Count - 1]);
+                try
+                {
+                    ChatHistory.UpdateLayout();
+                    if (ChatHistory.Items.Count > 0)
+                    {
+                        ChatHistory.ScrollIntoView(ChatHistory.Items[ChatHistory.Items.Count - 1]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Игнорируем ошибки скролла
+                    System.Diagnostics.Debug.WriteLine($"[DeepSeek] ScrollToBottom error: {ex.Message}");
+                }
             }));
+        }
+
+        // Добавим методы для контекстного меню
+        private void ChatMessage_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (sender is Border border && border.DataContext is ChatMessageItem item)
+            {
+                ChatHistory.SelectedItem = item;
+            }
+        }
+
+        private void CopyMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChatHistory.SelectedItem is ChatMessageItem selectedItem)
+            {
+                try
+                {
+                    Clipboard.SetText(selectedItem.Message);
+                    AddSystemMessage("Message copied to clipboard");
+                }
+                catch (Exception ex)
+                {
+                    AddSystemMessage($"Failed to copy: {ex.Message}");
+                }
+            }
+        }
+
+        private void CopyAllMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var allMessages = string.Join("\n\n",
+                    ChatMessages.Select(m => $"{GetMessageType(m)}: {m.Message}"));
+
+                Clipboard.SetText(allMessages);
+                AddSystemMessage("All messages copied to clipboard");
+            }
+            catch (Exception ex)
+            {
+                AddSystemMessage($"Failed to copy all: {ex.Message}");
+            }
+        }
+
+        private void ClearChatMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ChatMessages.Clear();
+            AddSystemMessage("Chat cleared");
+        }
+
+        private string GetMessageType(ChatMessageItem item)
+        {
+            var color = item.BackgroundColor as SolidColorBrush;
+            if (color == null) return "[Unknown]";
+
+            if (color.Color.R == 0 && color.Color.G == 120 && color.Color.B == 215)
+                return "[User]";
+            else if (color.Color.R == 30 && color.Color.G == 30 && color.Color.B == 30)
+                return "[Assistant]";
+            else
+                return "[System]";
         }
 
         public void Dispose()
