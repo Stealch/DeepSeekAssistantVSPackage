@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 // ToolWindow\DeepSeekChatWindow.cs
+
 namespace DeepSeekAssistantVSPackage.ToolWindows
 {
     [Guid(PackageGuids.DeepSeekChatToolWindowString)]
