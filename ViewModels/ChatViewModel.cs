@@ -1,10 +1,12 @@
-﻿// ViewModels\ChatViewModel.cs
+﻿// ViewModels\ChatViewModel.cs (обновленная версия)
 using DeepseekAPILib;
 using DeepSeekAssistantVSPackage.Options;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 
@@ -12,9 +14,9 @@ namespace DeepSeekAssistantVSPackage.ViewModels
 {
     public class ChatViewModel : INotifyPropertyChanged, IDisposable
     {
-        private DeepSeekAPI _apiClient;
+        // Меняем тип с DeepSeekAPI на IDeepSeekClient
+        private IDeepSeekClient _apiClient;
         private DeepSeekOptionsPage _optionsPage;
-        private bool _isInitialized;
 
         public ObservableCollection<ChatMessageItem> Messages { get; }
         public event EventHandler<string> NewSystemMessage;
@@ -32,22 +34,21 @@ namespace DeepSeekAssistantVSPackage.ViewModels
             var package = DeepSeekAssistantVSPackagePackage.Instance;
             if (package == null)
             {
-                OnNewSystemMessage("Package not initialized");
+                OnNewSystemMessage("Пакет не инициализирован");
                 return;
             }
 
             _optionsPage = (DeepSeekOptionsPage)package.GetDialogPage(typeof(DeepSeekOptionsPage));
             if (_optionsPage == null)
             {
-                OnNewSystemMessage("Options page not found");
+                OnNewSystemMessage("Страница настроек не найдена");
                 return;
             }
 
             UpdateApiClient();
             SubscribeToOptionsChanges();
 
-            _isInitialized = true;
-            OnNewSystemMessage("Chat initialized");
+            OnNewSystemMessage("Чат инициализирован");
         }
 
         private void UpdateApiClient()
@@ -59,18 +60,73 @@ namespace DeepSeekAssistantVSPackage.ViewModels
                 var apiKey = _optionsPage?.ApiKey?.Trim();
                 string keyForApi = string.IsNullOrEmpty(apiKey) ? " " : apiKey;
 
-                _apiClient = new DeepSeekAPI(keyForApi);
+                // ОТЛАДКА АРХИТЕКТУРЫ
+                bool is64BitProcess = IntPtr.Size == 8;
+                bool is64BitOS = Environment.Is64BitOperatingSystem;
 
-                string status = string.IsNullOrEmpty(apiKey)
-                    ? "Using anonymous access"
-                    : $"API key set ({apiKey.Length} chars)";
+                OnNewSystemMessage($"Process: {(is64BitProcess ? "x64" : "x86")}");
+                OnNewSystemMessage($"OS: {(is64BitOS ? "x64" : "x86")}");
+                OnNewSystemMessage($"IntPtr.Size: {IntPtr.Size}");
 
-                OnNewSystemMessage(status);
+                var version = ProtocolDetector.GetWindowsVersion();
+                OnNewSystemMessage($"Windows: {version.Major}.{version.Minor}.{version.Build}");
+
+                // Принудительно Curl для Windows 7 с отладкой
+                if (version.Major == 6 && version.Minor == 1)
+                {
+                    OnNewSystemMessage("Windows 7 detected, testing Curl...");
+
+                    try
+                    {
+                        // Получаем информацию о libcurl через рефлексию
+                        string curlDebugInfo = GetLibCurlDebugInfo();
+                        OnNewSystemMessage($"LibCurl: {curlDebugInfo}");
+
+                        _apiClient = new DeepSeekCurlClient(keyForApi);
+                        OnNewSystemMessage("✓ Curl client loaded");
+                    }
+                    catch (Exception curlEx)
+                    {
+                        OnNewSystemMessage($"✗ Curl failed: {curlEx.Message}");
+
+                        // Fallback на HttpClient
+                        OnNewSystemMessage("Trying HttpClient fallback...");
+                        _apiClient = new DeepSeekAPI(keyForApi);
+                        OnNewSystemMessage("✓ HttpClient fallback loaded");
+                    }
+                }
+                else
+                {
+                    _apiClient = DeepSeekClientFactory.CreateClient(keyForApi);
+                }
+
+                // Проверяем финальный тип клиента
+                OnNewSystemMessage($"Final client: {_apiClient.GetType().Name}");
             }
             catch (Exception ex)
             {
-                _apiClient = null;
-                OnNewSystemMessage($"Failed to initialize API: {ex.Message}");
+                OnNewSystemMessage($"❌ Critical: {ex.Message}");
+                throw;
+            }
+        }
+
+        private string GetLibCurlDebugInfo()
+        {
+            try
+            {
+                // Загружаем библиотеку через рефлексию
+                var assembly = Assembly.Load("DeepseekAPILib");
+
+                // Проверяем наличие libcurl-x86.dll в ресурсах
+                var resources = assembly.GetManifestResourceNames();
+                bool hasX86 = resources.Any(r => r.Contains("libcurl-x86.dll"));
+                bool hasX64 = resources.Any(r => r.Contains("libcurl-x64.dll"));
+
+                return $"Resources: x86={hasX86}, x64={hasX64}, Count={resources.Length}";
+            }
+            catch (Exception ex)
+            {
+                return $"Error checking libcurl: {ex.Message}";
             }
         }
 
@@ -94,12 +150,12 @@ namespace DeepSeekAssistantVSPackage.ViewModels
                 }
                 else
                 {
-                    OnNewSystemMessage("Empty response received");
+                    OnNewSystemMessage("Получен пустой ответ");
                 }
             }
             catch (Exception ex)
             {
-                OnNewSystemMessage($"Error: {ex.Message}");
+                OnNewSystemMessage($"Ошибка: {ex.Message}");
             }
 
             OnScrollToBottomRequested();
@@ -107,13 +163,13 @@ namespace DeepSeekAssistantVSPackage.ViewModels
 
         public async System.Threading.Tasks.Task SendTestMessageAsync()
         {
-            await SendMessageAsync("Hello! This is a test message.");
+            await SendMessageAsync("Привет! Это тестовое сообщение.");
         }
 
         public void ClearChat()
         {
             Messages.Clear();
-            OnNewSystemMessage("Chat cleared");
+            OnNewSystemMessage("Чат очищен");
         }
 
         private void AddUserMessage(string message)
@@ -169,7 +225,7 @@ namespace DeepSeekAssistantVSPackage.ViewModels
                 {
                     await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                     UpdateApiClient();
-                    OnNewSystemMessage("API key updated");
+                    OnNewSystemMessage("API ключ обновлен");
                 });
             }
         }
@@ -177,7 +233,10 @@ namespace DeepSeekAssistantVSPackage.ViewModels
         public void Dispose()
         {
             _apiClient?.Dispose();
-            _optionsPage.PropertyChanged -= OnOptionsPropertyChanged;
+            if (_optionsPage != null)
+            {
+                _optionsPage.PropertyChanged -= OnOptionsPropertyChanged;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
