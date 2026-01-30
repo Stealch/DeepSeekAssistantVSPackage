@@ -30,6 +30,8 @@ namespace DeepSeekAssistantVSPackage
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(DeepSeekChatWindow))]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideOptionPage(typeof(Options.DeepSeekOptionsPage), "DeepSeek Assistant", "General", 0, 0, true)]
+    [ProvideOptionPage(typeof(Options.LogOptions), "DeepSeek Assistant", "Debug", 1, 0, true)]
     #endregion
     public sealed class DeepSeekAssistantVSPackagePackage : AsyncPackage
     {
@@ -37,8 +39,10 @@ namespace DeepSeekAssistantVSPackage
         public const string PackageGuidString = PackageGuids.DeepSeekAssistantVSPackagePackageString;
         public const string PackageCommandSetGuidString = PackageGuids.DeepSeekAssistantVSPackagePackageCmdSetString;
         public const string DeepSeekChatToolWindowString = PackageGuids.DeepSeekChatToolWindowString;
+
         // Добавляем константу для страницы настроек
         public const string DeepSeekOptionsPageGuidString = PackageGuids.DeepSeekOptionsPageString;
+        public const string DeepSeekLogOptionsPage = PackageGuids.DeepSeekLogOptionsPageString;
 
         #region Package Members
 

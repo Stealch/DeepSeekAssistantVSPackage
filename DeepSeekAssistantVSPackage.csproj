@@ -79,6 +79,9 @@
     <Compile Include="Dialogs\IOptionsDialog.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Options\LogOptions.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PackageIds.cs" />
     <Compile Include="Commands\OpenDeepSeekChatCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

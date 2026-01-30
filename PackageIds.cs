@@ -22,7 +22,7 @@ namespace DeepSeekAssistantVSPackage
 
         // Добавляем GUID для страницы настроек
         public const string DeepSeekOptionsPageString = "C5F46D8E-6C5F-4F2B-8F0A-7A8B9C0D1E2F";
-
+        public const string DeepSeekLogOptionsPageString = "8A4E1C2F-9B3D-4E8F-A7C6-1D5E9F3A8B7C";
         public const string VsOutputWindowString = "{34E76E81-EE4A-11D0-AE2E-00A0C90FFFC3}";
         public const string VsErrorListString = "{D78612C7-9962-4B83-95D9-268046DAD23A}";
         public const string VsTaskListString = "{4A9B7E51-AA16-11D0-A8C5-00A0C921A4D2}";
@@ -36,7 +36,7 @@ namespace DeepSeekAssistantVSPackage
 
         // Добавляем Guid для страницы настроек
         public static readonly Guid DeepSeekOptionsPage = new Guid(DeepSeekOptionsPageString);
-
+        public static readonly Guid DeepSeekLogOptionsPage = new Guid(DeepSeekLogOptionsPageString);
         public static readonly Guid VsOutputWindow = new Guid(VsOutputWindowString);
         public static readonly Guid VsErrorList = new Guid(VsErrorListString);
         public static readonly Guid VsTaskList = new Guid(VsTaskListString);

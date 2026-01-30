@@ -1,6 +1,6 @@
 ﻿// ViewModels\ChatViewModel.cs
 using DeepseekAPILib;
-using DeepseekAPILib.Utilities; // ← ДОБАВЬТЕ ЭТУ СТРОКУ!
+using DeepseekAPILib.Utilities;
 using DeepSeekAssistantVSPackage.Options;
 using Microsoft.VisualStudio.Shell;
 using System;
@@ -162,7 +162,25 @@ namespace DeepSeekAssistantVSPackage.ViewModels
             }
             catch (Exception ex)
             {
-                OnNewSystemMessage($"Ошибка: {ex.GetType().Name}: {ex.Message}");
+                var errorInfo = ErrorCodes.GetErrorInfo(ex);
+
+                if (errorInfo.ShowToUser)
+                {
+                    OnNewSystemMessage($"⚠️ {errorInfo.FriendlyMessage}");
+
+                    // Разбиваем рекомендации на строки
+                    var recommendations = errorInfo.Recommendations.Split('\n');
+                    foreach (var line in recommendations)
+                    {
+                        if (!string.IsNullOrWhiteSpace(line))
+                        {
+                            OnNewSystemMessage($"💡 {line.Trim()}");
+                        }
+                    }
+                }
+
+                // Всегда логируем ошибки
+                Logger.LogError(ex, "ChatViewModel.SendMessageAsync");
             }
 
             OnScrollToBottomRequested();
