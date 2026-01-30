@@ -1,5 +1,6 @@
-﻿// ViewModels\ChatViewModel.cs (обновленная версия)
+﻿// ViewModels\ChatViewModel.cs
 using DeepseekAPILib;
+using DeepseekAPILib.Utilities; // ← ДОБАВЬТЕ ЭТУ СТРОКУ!
 using DeepSeekAssistantVSPackage.Options;
 using Microsoft.VisualStudio.Shell;
 using System;
@@ -14,7 +15,6 @@ namespace DeepSeekAssistantVSPackage.ViewModels
 {
     public class ChatViewModel : INotifyPropertyChanged, IDisposable
     {
-        // Меняем тип с DeepSeekAPI на IDeepSeekClient
         private IDeepSeekClient _apiClient;
         private DeepSeekOptionsPage _optionsPage;
 
@@ -30,6 +30,21 @@ namespace DeepSeekAssistantVSPackage.ViewModels
         public async System.Threading.Tasks.Task InitializeAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            // ИНИЦИАЛИЗИРУЕМ ЛОГГЕР БИБЛИОТЕКИ
+            try
+            {
+                Logger.Initialize();
+                OnNewSystemMessage("Логгер API инициализирован");
+                var logPath = typeof(Logger).GetField("_logFilePath",
+                BindingFlags.NonPublic | BindingFlags.Static)?.GetValue(null) as string;
+
+                OnNewSystemMessage($"Логгер API: {logPath ?? "null"}");
+            }
+            catch (Exception ex)
+            {
+                OnNewSystemMessage($"Ошибка инициализации логгера: {ex.Message}");
+            }
 
             var package = DeepSeekAssistantVSPackagePackage.Instance;
             if (package == null)
@@ -60,7 +75,6 @@ namespace DeepSeekAssistantVSPackage.ViewModels
                 var apiKey = _optionsPage?.ApiKey?.Trim();
                 string keyForApi = string.IsNullOrEmpty(apiKey) ? " " : apiKey;
 
-                // ОТЛАДКА АРХИТЕКТУРЫ
                 bool is64BitProcess = IntPtr.Size == 8;
                 bool is64BitOS = Environment.Is64BitOperatingSystem;
 
@@ -71,14 +85,12 @@ namespace DeepSeekAssistantVSPackage.ViewModels
                 var version = ProtocolDetector.GetWindowsVersion();
                 OnNewSystemMessage($"Windows: {version.Major}.{version.Minor}.{version.Build}");
 
-                // Принудительно Curl для Windows 7 с отладкой
                 if (version.Major == 6 && version.Minor == 1)
                 {
                     OnNewSystemMessage("Windows 7 detected, testing Curl...");
 
                     try
                     {
-                        // Получаем информацию о libcurl через рефлексию
                         string curlDebugInfo = GetLibCurlDebugInfo();
                         OnNewSystemMessage($"LibCurl: {curlDebugInfo}");
 
@@ -89,7 +101,6 @@ namespace DeepSeekAssistantVSPackage.ViewModels
                     {
                         OnNewSystemMessage($"✗ Curl failed: {curlEx.Message}");
 
-                        // Fallback на HttpClient
                         OnNewSystemMessage("Trying HttpClient fallback...");
                         _apiClient = new DeepSeekAPI(keyForApi);
                         OnNewSystemMessage("✓ HttpClient fallback loaded");
@@ -100,7 +111,6 @@ namespace DeepSeekAssistantVSPackage.ViewModels
                     _apiClient = DeepSeekClientFactory.CreateClient(keyForApi);
                 }
 
-                // Проверяем финальный тип клиента
                 OnNewSystemMessage($"Final client: {_apiClient.GetType().Name}");
             }
             catch (Exception ex)
@@ -114,10 +124,7 @@ namespace DeepSeekAssistantVSPackage.ViewModels
         {
             try
             {
-                // Загружаем библиотеку через рефлексию
                 var assembly = Assembly.Load("DeepseekAPILib");
-
-                // Проверяем наличие libcurl-x86.dll в ресурсах
                 var resources = assembly.GetManifestResourceNames();
                 bool hasX86 = resources.Any(r => r.Contains("libcurl-x86.dll"));
                 bool hasX64 = resources.Any(r => r.Contains("libcurl-x64.dll"));
@@ -155,7 +162,7 @@ namespace DeepSeekAssistantVSPackage.ViewModels
             }
             catch (Exception ex)
             {
-                OnNewSystemMessage($"Ошибка: {ex.Message}");
+                OnNewSystemMessage($"Ошибка: {ex.GetType().Name}: {ex.Message}");
             }
 
             OnScrollToBottomRequested();

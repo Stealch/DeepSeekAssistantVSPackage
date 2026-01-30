@@ -90,9 +90,7 @@
     <Compile Include="ViewModels\ChatViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Libs\curl-ca-bundle.crt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="Libs\curl-ca-bundle.crt" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
