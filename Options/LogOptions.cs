@@ -3,6 +3,7 @@ using DeepseekAPILib.Utilities;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -41,6 +42,7 @@ namespace DeepSeekAssistantVSPackage.Options
         [Category("Debugging")]
         [DisplayName("Log File Path")]
         [Description("Path to the API log file")]
+        [Editor(typeof(LogFileEditor), typeof(UITypeEditor))]
         [ReadOnly(true)]
         public string LogFilePath
         {
