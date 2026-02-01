@@ -73,10 +73,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Dialogs\ApiKeyEditor.cs" />
-    <Compile Include="Dialogs\ApiKeyDialog.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Dialogs\ApiKeyOptionsControl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Dialogs\ApiKeyOptionsEditor.cs" />
     <Compile Include="Dialogs\TestConnectionForm.cs">
       <SubType>Form</SubType>
     </Compile>

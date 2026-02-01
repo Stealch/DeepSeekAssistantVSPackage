@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.Shell;
+using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Runtime.InteropServices;
@@ -17,8 +18,21 @@ namespace DeepSeekAssistantVSPackage.Options
         [Category("DeepSeek API")]
         [DisplayName("API Key")]
         [Description("Your DeepSeek API key (optional). Leave empty for anonymous access.")]
-        [Editor(typeof(ApiKeyEditor), typeof(UITypeEditor))] // ← ДОБАВЛЯЕМ
-        [PasswordPropertyText(true)] // ← Звездочки
+        [Editor(typeof(ApiKeyOptionsEditor), typeof(UITypeEditor))]
+        // [PasswordPropertyText(true)] // ← Звездочки
+        [ReadOnly(true)] // ← Это сделает поле серым в PropertyGrid
+        public string MaskedApiKey
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_apiKey))
+                    return "[No key - click to set]";
+
+                return $"{_apiKey.Substring(0, 8)}{new string('*', Math.Max(0, _apiKey.Length - 12))}{_apiKey.Substring(_apiKey.Length - 4)}";
+            }
+        }
+
+        [Browsable(false)]
         public string ApiKey
         {
             get => _apiKey;
@@ -31,9 +45,6 @@ namespace DeepSeekAssistantVSPackage.Options
                 }
             }
         }
-
-        // УДАЛЯЕМ старые методы TestConnection() и ClearKey()
-        // Они теперь в ApiKeyDialog
 
         [Browsable(false)] // Скрываем от PropertyGrid
         public string RawApiKey => _apiKey;
